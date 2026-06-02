@@ -37,9 +37,12 @@ st.markdown("Trabalho de Conclusão de Disciplina — Pós-Graduação")
 # ==============================================================================
 # 🧠 CARREGAMENTO DE MODELOS E DADOS (CACHED)
 # ==============================================================================
+# ==============================================================================
+# 🧠 CARREGAMENTO DE MODELOS E DADOS (CACHED)
+# ==============================================================================
 @st.cache_resource
 def carregar_modelos_nlp():
-    # Downloads locais necessários para a aba de teste de pré-processamento
+    # Downloads locais necessários para o funcionamento do NLTK
     nltk.download('punkt')
     nltk.download('stopwords')
     
@@ -49,7 +52,9 @@ def carregar_modelos_nlp():
     
     return stemmer, stop_words
 
+# AQUI ESTÁ A CHAVE: Extraímos as variáveis para o escopo global do script
 stemmer, stop_words = carregar_modelos_nlp()
+
 
 @st.cache_data
 def carregar_dados_otimizados():
@@ -62,15 +67,11 @@ def carregar_dados_otimizados():
         url = "https://raw.githubusercontent.com/Ramaseshanr/anlp/master/corpus/bbc-text.csv"
         df = pd.read_csv(url)
         
-        # Criamos os recursos de limpeza locais e isolados para o fallback
-        from nltk.corpus import stopwords
-        stop_words_fallback = set(stopwords.words('english'))
-        stop_words_fallback.update({'said', 'would', 'also'})
-        
+        # Agora o "stop_words" aqui funciona perfeitamente porque já está global!
         def limpar_fallback(texto):
             texto = texto.lower().translate(str.maketrans('', '', string.punctuation))
             doc = nlp(texto)
-            return " ".join([token.lemma_ for token in doc if token.text not in stop_words_fallback and not token.is_space])
+            return " ".join([token.lemma_ for token in doc if token.text not in stop_words and not token.is_space])
         
         # Exibe um aviso temporário na tela do Streamlit informando o processamento
         st.warning("⚠️ Arquivo processado não encontrado. Rodando limpeza pesada em tempo real...")

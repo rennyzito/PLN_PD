@@ -1,7 +1,6 @@
 streamlit
 pandas
 nltk
-spacy
 scikit-learn
 matplotlib
 networkx

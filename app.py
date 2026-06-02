@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Pipeline PLN - BBC News", layout="wide")
 
 st.title("🎓 Pipeline de PLN Interativo — BBC News Classification")
-st.markdown("Trabalho de Conclusão de Disciplina — Pós-Graduação [cite: 3]")
+st.markdown("Trabalho de Conclusão de Disciplina — Pós-Graduação")
 
 # --- FUNÇÕES CORE EM CACHE ---
 @st.cache_resource
@@ -161,7 +161,7 @@ with aba3:
             st.metric("Métrica Global F1", "99%", "Melhor performance semântica")
         
         st.markdown("""
-        **Nota do Aluno:** Ambos os modelos demonstraram alto desempenho. O Naive Bayes assume independência entre palavras, o que funciona muito bem para textos jornalísticos temáticos onde palavras-chave denunciam a categoria imediatamente[cite: 42].
+        **Nota do Aluno:** Ambos os modelos demonstraram alto desempenho. O Naive Bayes assume independência entre palavras, o que funciona muito bem para textos jornalísticos temáticos onde palavras-chave denunciam a categoria imediatamente.
         """)
 
 # === ABA 4: GRAFO DE CONHECIMENTO [cite: 46] ===

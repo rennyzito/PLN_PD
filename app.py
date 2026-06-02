@@ -5,24 +5,35 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 import spacy
-import os
+import subprocess
 import sys
 
 # ==============================================================================
-# 🛠️ BLINDAGEM E INFRAESTRUTURA: GARANTIA DE INSTALAÇÃO DO MODELO SPACY
+# 🛠️ SISTEMA DE SINCRONIZAÇÃO E DOWNLOAD AUTOMÁTICO DO SPACY (BLINDADO)
 # ==============================================================================
-# Se o instalador da nuvem falhar em registrar o en_core_web_sm no escopo global,
-# o próprio Python abre o terminal do servidor e força a instalação nativa.
-try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    os.system(f"{sys.executable} -m spacy download en_core_web_sm")
-    nlp = spacy.load("en_core_web_sm")
+@st.cache_resource
+def garantir_modelo_spacy():
+    try:
+        # Tenta carregar o modelo normalmente
+        return spacy.load("en_core_web_sm")
+    except OSError:
+        # Se não encontrar, o subprocess FAZ O SCRIPT ESPERAR o download terminar na nuvem
+        with st.spinner("Instalando pacotes linguísticos no servidor... Por favor, aguarde."):
+            subprocess.run([sys.executable, "-m", "spacy", "download", "en_core_web_sm"], check=True)
+        # Agora que o download terminou com 100% de certeza, carrega com sucesso
+        return spacy.load("en_core_web_sm")
+
+# Inicializa o pipeline do spaCy de forma global e segura
+nlp = garantir_modelo_spacy()
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, ConfusionMatrixDisplay
+import networkx as nx
+import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, ConfusionMatrixDisplay
 import networkx as nx

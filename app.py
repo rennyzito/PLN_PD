@@ -103,22 +103,22 @@ with aba1:
         
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.subheader("Stemming (NLTK) [cite: 29]")
+            st.subheader("Stemming (NLTK)")
             st.caption("Heurística de corte bruto de sufixos")
             st.write(stems)
         with col2:
-            st.subheader("Lemmatização (spaCy) [cite: 29]")
+            st.subheader("Lemmatização (spaCy)")
             st.caption("Redução morfológica baseada no dicionário")
             st.write(lemas)
         with col3:
-            st.subheader("POS Tagging (spaCy) [cite: 29]")
+            st.subheader("POS Tagging (spaCy)")
             st.caption("Análise de classes gramaticais")
             st.write(pos_tags)
 
 # === ABA 2: BUSCA POR SIMILARIDADE [cite: 33] ===
 with aba2:
-    st.header("Mecanismo de Busca Textual por Similaridade de Cosseno [cite: 35, 36]")
-    st.markdown("Nosso motor transforma seu texto em vetores TF-IDF e calcula a distância angular contra a base[cite: 33, 34].")
+    st.header("Mecanismo de Busca Textual por Similaridade de Cosseno")
+    st.markdown("Nosso motor transforma seu texto em vetores TF-IDF e calcula a distância angular contra a base.")
     
     query = st.text_input("Digite um termo ou frase para buscar no jornal:", "political crisis")
     
@@ -128,7 +128,7 @@ with aba2:
         # Coleta os 3 documentos mais próximos [cite: 37]
         indices_similares = compara_cosseno.argsort()[::-1][:3]
         
-        st.subheader("Resultados Mais Relevantes do Corpus (Top 3)[cite: 37]:")
+        st.subheader("Resultados Mais Relevantes do Corpus (Top 3):")
         for idx in indices_similares:
             score = compara_cosseno[idx]
             if score > 0:
@@ -137,7 +137,7 @@ with aba2:
 
 # === ABA 3: MODELAGEM E CLASSIFICAÇÃO [cite: 39] ===
 with aba3:
-    st.header("Modelos de Aprendizado Supervisionado [cite: 44]")
+    st.header("Modelos de Aprendizado Supervisionado")
     
     escolha_modelo = st.radio("Selecione o Classificador para Visualização:", ["Naive Bayes", "Regressão Logística"])
     
@@ -149,12 +149,12 @@ with aba3:
             ConfusionMatrixDisplay.from_estimator(lr_model, X_test, y_test, cmap='Blues', ax=ax)
         else:
             ConfusionMatrixDisplay.from_estimator(nb_model, X_test, y_test, cmap='Oranges', ax=ax)
-        plt.title(f"Matriz de Confusão — {escolha_modelo} [cite: 43]")
+        plt.title(f"Matriz de Confusão — {escolha_modelo}")
         plt.grid(False)
         st.pyplot(fig)
         
     with col_metrica:
-        st.subheader("Acurácia de Teste [cite: 43]")
+        st.subheader("Acurácia de Teste")
         if escolha_modelo == "Regressão Logística":
             st.metric("Métrica Global F1", "98%", "Excelente estabilidade")
         else:
@@ -166,9 +166,8 @@ with aba3:
 
 # === ABA 4: GRAFO DE CONHECIMENTO [cite: 46] ===
 with aba4:
-    st.header("Grafo de Conhecimento: Extração de Informações de Redes (NER) [cite: 47, 51]")
-    st.markdown("Mapa de relacionamentos estruturados ligando Entidades Nomeadas de Pessoas e Organizações encontradas juntas em textos de política[cite: 53].")
-    
+    st.header("Grafo de Conhecimento: Extração de Informações de Redes (NER)")
+    st.markdown("Mapa de relacionamentos estruturados ligando Entidades Nomeadas de Pessoas e Organizações encontradas juntas em textos de política.")
     n_docs = st.slider("Amostra de documentos para composição do grafo:", min_value=10, max_value=40, value=25)
     
     if st.button("Construir Grafo de Conhecimento"):
@@ -206,6 +205,6 @@ with aba4:
         st.pyplot(fig_grafo)
         
         # Tabela informativa de Centralidade [cite: 51]
-        st.subheader("Métricas de Centralidade de Grau (Top 5 Atores)[cite: 51, 54]:")
+        st.subheader("Métricas de Centralidade de Grau (Top 5 Atores):")
         dados_centralidade = pd.DataFrame(centralidade.items(), columns=["Entidade", "Centralidade"]).sort_values(by="Centralidade", ascending=False).head(5)
         st.dataframe(dados_centralidade, use_container_width=True)

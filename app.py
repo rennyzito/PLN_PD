@@ -23,15 +23,15 @@ st.markdown("Trabalho de Conclusão de Disciplina — Pós-Graduação")
 # --- FUNÇÕES CORE EM CACHE ---
 @st.cache_resource
 def carregar_modelos_nlp():
-    # Mantemos o download apenas para a aba de teste de pré-processamento pontual
-    nltk.download('punkt')
-    nltk.download('stopwords')
-    nlp = spacy.load("en_core_web_sm")
+    # REMOVEMOS os downloads do nltk daqui porque o Streamlit já tem em cache
+    # E carregamos o en_core_web_sm direto do pacote instalado
+    import en_core_web_sm
+    nlp = en_core_web_sm.load()
+    
     stemmer = PorterStemmer()
     stop_words = set(stopwords.words('english'))
-    stop_words.update({'said', 'would', 'also'}) # Stopwords customizadas [cite: 29]
+    stop_words.update({'said', 'would', 'also'})
     return nlp, stemmer, stop_words
-
 nlp, stemmer, stop_words = carregar_modelos_nlp()
 
 @st.cache_data
